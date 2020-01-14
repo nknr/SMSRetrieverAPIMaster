@@ -1,4 +1,4 @@
-package wavetechstudio.sms.retriever.apimaster;
+package nknr.sms.retriever;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

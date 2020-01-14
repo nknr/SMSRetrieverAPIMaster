@@ -1,5 +1,6 @@
-package wavetechstudio.sms.retriever.apimaster;
+package nknr.sms.retriever;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -25,11 +26,7 @@ public class AppSignatureHashHelper extends ContextWrapper {
         super(context);
     }
 
-    /**
-     * Get all the app signatures for the current package
-     *
-     * @return
-     */
+    @SuppressLint("PackageManagerGetSignatures")
     public ArrayList<String> getAppSignatures() {
         ArrayList<String> appSignaturesHashs = new ArrayList<>();
 

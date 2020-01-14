@@ -1,4 +1,4 @@
-package wavetechstudio.sms.retriever.apimaster;
+package nknr.sms.retriever;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("wavetechstudio.sms.retriever.apimaster", appContext.getPackageName());
+        assertEquals("nknr.sms.retriever.apimaster", appContext.getPackageName());
     }
 }

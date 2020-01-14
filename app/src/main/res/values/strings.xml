@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">SMSRetrieverAPIMaster</string>
+    <string name="proceed">Proceed</string>
+    <string name="login_verification_text">Verify Your Number</string>
+    <string name="login_verification_description">Please enter your mobile number to receive a verification code. Carrier rates may apply</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="continue_with">CONTINUE</string>
+    <string name="otp_verification_text">Please type the OTP sent on</string>
+    <string name="opt_fail_text">Didn\'t receive the OTP?</string>
+    <string name="resend_otp">Resend OTP</string>
+    <string name="country_code">+91</string>
 </resources>
