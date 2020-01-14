@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name="nknr.sms.retriever.view.ui.GenerateOtpActivity" />
+        <activity android:name="nknr.sms.retriever.view.ui.VerifyOtpActivity" />
         <activity android:name="nknr.sms.retriever.view.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

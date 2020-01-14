@@ -4,12 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -29,13 +29,11 @@ import nknr.sms.retriever.SMSApp;
 import nknr.sms.retriever.databinding.ActivityGenerateOtpBinding;
 import nknr.sms.retriever.service.repository.SendOtpRepository;
 import nknr.sms.retriever.utility.RandomNumber;
-import nknr.sms.retriever.SMSReceiver;
 
-public class MainActivity extends AppCompatActivity implements SMSReceiver.OTPReceiveListener {
+public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = MainActivity.class.getSimpleName();
     private int RESOLVE_HINT = 2;
-    private SMSReceiver smsReceiver;
     private ActivityGenerateOtpBinding binding;
     private GoogleApiClient mGoogleApiClient;
 
@@ -46,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements SMSReceiver.OTPRe
 
         setupGoogleClient();
         getHintPhoneNumber();
-        startSMSListener();
     }
 
     private void setupGoogleClient() {
@@ -81,22 +78,9 @@ public class MainActivity extends AppCompatActivity implements SMSReceiver.OTPRe
         }
     }
 
-
-    public void onProceed(View view){
-        startSMSListener();
-    }
-
-    private void startSMSListener() {
+    public void onProceed(View view) {
         try {
-            smsReceiver = new SMSReceiver();
-            smsReceiver.setOTPListener(this);
-
-            IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction(SmsRetriever.SMS_RETRIEVED_ACTION);
-            this.registerReceiver(smsReceiver, intentFilter);
-
             SmsRetrieverClient client = SmsRetriever.getClient(this);
-
             Task<Void> task = client.startSmsRetriever();
             task.addOnSuccessListener(aVoid -> sendOtp());
 
@@ -107,45 +91,18 @@ public class MainActivity extends AppCompatActivity implements SMSReceiver.OTPRe
     }
 
 
+
     @SuppressLint("DefaultLocale")
     private void sendOtp() {
         String mobileNumber = binding.mobile.getText().toString();
         String message = String.format("<#> Your otp code is: %d. %s ",
-                 RandomNumber.getRandomNum(),
-                 SMSApp.getHashKey());
+                RandomNumber.getRandomNum(),
+                SMSApp.getHashKey());
 
-        SendOtpRepository.generateOtp(mobileNumber,message);
-    }
-
-
-    @Override
-    public void onOTPReceived(String otp) {
-        showToast("OTP Received: " + otp);
-        Log.d(TAG, "otp " + otp);
-        if (smsReceiver != null) {
-            unregisterReceiver(smsReceiver);
-            smsReceiver = null;
-        }
-    }
-
-    @Override
-    public void onOTPTimeOut() {
-        showToast("OTP Time out");
-        Log.d(TAG, "timeout");
-    }
-
-    @Override
-    public void onOTPReceivedError(String error) {
-        showToast(error);
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (smsReceiver != null) {
-            unregisterReceiver(smsReceiver);
-        }
+        SendOtpRepository.generateOtp(mobileNumber, message, (status, message1) -> {
+            Log.d(TAG," status "+status);
+                startActivity(new Intent(this, VerifyOtpActivity.class));
+        });
     }
 
     private void showToast(String msg) {
